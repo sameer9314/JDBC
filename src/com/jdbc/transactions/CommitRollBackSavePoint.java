@@ -1,17 +1,15 @@
-package myfirstjdbc;
+package com.jdbc.transactions;
 
 import java.sql.Connection;
+import java.sql.Savepoint;
 import java.sql.Statement;
 
 import com.jdbc.utility.JdbcUtility;
 
-
-
-public class JdbcTransactions {
-	 JdbcUtility obj= new JdbcUtility();
+public class CommitRollBackSavePoint {
+	JdbcUtility obj= new JdbcUtility();
 
 	 static Connection con=null;
-	 static Connection con1=null;
 	 public static void main(String[] args) {
 		 new JdbcUtility();
 		 con=JdbcUtility.loadAndConnect();
@@ -23,11 +21,15 @@ public class JdbcTransactions {
 			 
 			 con.setAutoCommit(false);  
 			 
+			 
 			 query="insert into student values(2,'saurabh','9876543211')";
 			 stmt.executeUpdate(query);
 			 
-			 query="insert into student values(3,'saket','9876543211')";
+			 Savepoint savepoint1 = con.setSavepoint("ROWS_DELETED_1");
+			 query="delete from student where student_name='saurabh'";
 			 stmt.executeUpdate(query);
+			 
+			 con.rollback(savepoint1);
 			 
 				System.out.println();
 				System.out.println("commit/rollback");  
@@ -53,4 +55,3 @@ public class JdbcTransactions {
 		 }
 	}
 }
-
