@@ -29,7 +29,7 @@ public class CommitRollBackSavePoint {
 			 query="delete from student where student_name='saurabh'";
 			 stmt.executeUpdate(query);
 			 
-			 con.rollback(savepoint1);
+			 con.setSavepoint();
 			 
 				System.out.println();
 				System.out.println("commit/rollback");  
